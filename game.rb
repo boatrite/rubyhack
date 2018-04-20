@@ -89,8 +89,8 @@ class Game
       # entity which is deleted once it's HP falls to zero.
       #
       # Then it would no longer be called up in the MonsterAI system which damages the player.
-      MonsterAI.resolve(state, next_state)
       PlayerAttackResolver.resolve(state, next_state)
+      MonsterAI.resolve(state, next_state)
 
       # Doesn't mutate next_state -- returns next_state or (a potentially modified) state.
       next_state = CollisionResolver.resolve(state, next_state)
