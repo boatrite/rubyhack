@@ -83,6 +83,12 @@ class Game
       end
 
       # Mutates next_state
+      # TODO Next:
+      # These should be systems in an ECS. The bug where the goblin still deals
+      # damage to the player would be fixed if the goblin were stored as an
+      # entity which is deleted once it's HP falls to zero.
+      #
+      # Then it would no longer be called up in the MonsterAI system which damages the player.
       MonsterAI.resolve(state, next_state)
       PlayerAttackResolver.resolve(state, next_state)
 
