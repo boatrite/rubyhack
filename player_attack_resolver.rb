@@ -9,11 +9,15 @@ class PlayerAttackResolver
     monster_y = prev_state[:monster][:y]
     monster_x = prev_state[:monster][:x]
 
-    # Then deduct monster hp. The player doesn't change squares.
+    # Then deduct monster hp. The player doesn't change squares if it lives.
     if player_y == monster_y && player_x == monster_x
       state[:monster_hp] -= 1
-      state[:player_position][:y] = prev_state[:player_position][:y]
-      state[:player_position][:x] = prev_state[:player_position][:x]
+      state[:monster_hp] = [0, state[:monster_hp]].max
+      if state[:monster_hp] == 0
+      else
+        state[:player_position][:y] = prev_state[:player_position][:y]
+        state[:player_position][:x] = prev_state[:player_position][:x]
+      end
     end
   end
 end

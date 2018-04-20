@@ -89,8 +89,9 @@ class Game
       # Doesn't mutate next_state -- returns next_state or (a potentially modified) state.
       next_state = CollisionResolver.resolve(state, next_state)
 
+      # Weird rendering code?
       next_state[:room][next_state[:player_position][:y]][next_state[:player_position][:x]] = C
-      next_state[:room][next_state[:monster][:y]][next_state[:monster][:x]] = M
+      next_state[:room][next_state[:monster][:y]][next_state[:monster][:x]] = M if next_state[:monster_hp].nonzero?
 
       state = next_state
       render_state state
