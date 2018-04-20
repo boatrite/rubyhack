@@ -5,11 +5,17 @@ V = :vertical_wall
 E = :empty
 C = :player
 
-ROOM = [
+room = [
   [H]*11,
-  *[[V, *[E]*9, V]]*4,
-  [V, *[E]*4, C, *[E]*4, V],
-  *[[V, *[E]*9, V]]*4,
+  [V, *[E]*9, V],
+  [V, *[E]*9, V],
+  [V, *[E]*9, V],
+  [V, *[E]*9, V],
+  [V, *[E]*9, V],
+  [V, *[E]*9, V],
+  [V, *[E]*9, V],
+  [V, *[E]*9, V],
+  [V, *[E]*9, V],
   [H]*11
 ]
 
@@ -38,4 +44,33 @@ def display_room(room)
   end
 end
 
-display_room ROOM
+def render_room(room, state)
+  room = room.dup
+  room[state[:player_position][:x]][state[:player_position][:y]] = C
+  display_room room
+end
+
+state = {
+  player_position: { x: 5, y: 5 }
+}
+
+render_room room, state
+
+#loop do
+  #puts 'Do what?'
+  #command = gets.chomp # TODO Find out how to not need to hit Enter.
+  #puts command
+  #case command
+  #when 'h'
+    #state[:player_position][:x] -= 1
+  #when 'j'
+    #state[:player_position][:y] -= 1
+  #when 'k'
+    #state[:player_position][:y] += 1
+  #when 'l'
+    #state[:player_position][:x] += 1
+  #when 'Q', 'q', 'exit'
+    #puts 'Bye!'
+    #exit
+  #end
+#end
