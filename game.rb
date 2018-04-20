@@ -28,38 +28,37 @@ class Game
     end
   end
 
-  def render_room(room, state)
+  def render_state(state)
     puts `clear`
     puts "Player HP: #{state[:player_hp]}"
-    room = room.map(&:dup)
-    room[state[:player_position][:y]][state[:player_position][:x]] = C
-    room[state[:monster][:y]][state[:monster][:x]] = M
-    display_room room
+    puts "Monster HP: #{state[:monster_hp]}"
+    display_room state[:room]
   end
 
   def initialize
-    room = [
-      [H]*11,
-      [V, *[E]*9, V],
-      [V, *[E]*9, V],
-      [V, *[E]*9, V],
-      [V, *[E]*9, V],
-      [V, *[E]*9, V],
-      [V, *[E]*9, V],
-      [V, *[E]*9, V],
-      [V, *[E]*9, V],
-      [V, *[E]*9, V],
-      [H]*11
-    ]
     state = {
+      room: [
+        [H]*11,
+        [V, *[E]*9, V],
+        [V, *[E]*9, V],
+        [V, *[E]*9, V],
+        [V, *[E]*9, V],
+        [V, *[E]*9, V],
+        [V, *[E]*9, V],
+        [V, *[E]*9, V],
+        [V, *[E]*9, V],
+        [V, *[E]*9, V],
+        [H]*11
+      ],
       player_position: { x: 5, y: 5 },
       player_hp: 10,
       monster: { x: 8, y: 8 },
       monster_hp: 3
     }
+    state[:room][state[:player_position][:y]][state[:player_position][:x]] = C
+    state[:room][state[:monster][:y]][state[:monster][:x]] = M
 
-    render_room room, state
-
+    render_state state
     loop do
       next_state = Marshal.load Marshal.dump state # Deep dup, so we can compare between states, go back, etc
 
@@ -67,26 +66,34 @@ class Game
       command = STDIN.getch
       case command
       when 'h'
+        next_state[:room][next_state[:player_position][:y]][next_state[:player_position][:x]] = E
         next_state[:player_position][:x] -= 1
       when 'j'
+        next_state[:room][next_state[:player_position][:y]][next_state[:player_position][:x]] = E
         next_state[:player_position][:y] += 1
       when 'k'
+        next_state[:room][next_state[:player_position][:y]][next_state[:player_position][:x]] = E
         next_state[:player_position][:y] -= 1
       when 'l'
+        next_state[:room][next_state[:player_position][:y]][next_state[:player_position][:x]] = E
         next_state[:player_position][:x] += 1
       when 'Q', 'q', 'exit'
         puts 'Bye!'
         exit
       end
 
-      # Mutates state
-      MonsterAI.resolve(room, state, next_state)
+      # Mutates next_state
+      MonsterAI.resolve(state, next_state)
+      PlayerAttackResolver.resolve(state, next_state)
 
-      # Doesn't mutate state
-      next_state = CollisionResolver.resolve(room, state, next_state)
+      # Doesn't mutate next_state -- returns next_state or (a potentially modified) state.
+      next_state = CollisionResolver.resolve(state, next_state)
+
+      next_state[:room][next_state[:player_position][:y]][next_state[:player_position][:x]] = C
+      next_state[:room][next_state[:monster][:y]][next_state[:monster][:x]] = M
 
       state = next_state
-      render_room room, state
+      render_state state
     end
   end
 end

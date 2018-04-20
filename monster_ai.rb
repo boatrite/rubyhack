@@ -1,6 +1,6 @@
 class MonsterAI
 
-  def self.resolve(room, prev_state, state)
+  def self.resolve(prev_state, state)
     player_y = prev_state[:player_position][:y]
     player_x = prev_state[:player_position][:x]
 

@@ -8,6 +8,7 @@ M = :goblin
 
 require_relative './collision_resolver'
 require_relative './monster_ai'
+require_relative './player_attack_resolver'
 require_relative './game'
 
 Game.new
