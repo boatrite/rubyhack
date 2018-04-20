@@ -45,8 +45,8 @@ def display_room(room)
 end
 
 def render_room(room, state)
-  room = room.dup
-  room[state[:player_position][:x]][state[:player_position][:y]] = C
+  room = room.map(&:dup)
+  room[state[:player_position][:y]][state[:player_position][:x]] = C
   display_room room
 end
 
@@ -56,21 +56,23 @@ state = {
 
 render_room room, state
 
-#loop do
-  #puts 'Do what?'
-  #command = gets.chomp # TODO Find out how to not need to hit Enter.
-  #puts command
-  #case command
-  #when 'h'
-    #state[:player_position][:x] -= 1
-  #when 'j'
-    #state[:player_position][:y] -= 1
-  #when 'k'
-    #state[:player_position][:y] += 1
-  #when 'l'
-    #state[:player_position][:x] += 1
-  #when 'Q', 'q', 'exit'
-    #puts 'Bye!'
-    #exit
-  #end
-#end
+loop do
+  puts 'Do what?'
+  command = gets.chomp # TODO Find out how to not need to hit Enter.
+  puts command
+  case command
+  when 'h'
+    state[:player_position][:x] -= 1
+  when 'j'
+    state[:player_position][:y] += 1
+  when 'k'
+    state[:player_position][:y] -= 1
+  when 'l'
+    state[:player_position][:x] += 1
+  when 'Q', 'q', 'exit'
+    puts 'Bye!'
+    exit
+  end
+
+  render_room room, state
+end
