@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'io/console'
+
 H = :horizontal_wall
 V = :vertical_wall
 E = :empty
@@ -45,6 +47,7 @@ def display_room(room)
 end
 
 def render_room(room, state)
+  puts `clear`
   room = room.map(&:dup)
   room[state[:player_position][:y]][state[:player_position][:x]] = C
   display_room room
@@ -58,8 +61,7 @@ render_room room, state
 
 loop do
   puts 'Do what?'
-  command = gets.chomp # TODO Find out how to not need to hit Enter.
-  puts command
+  command = STDIN.getch
   case command
   when 'h'
     state[:player_position][:x] -= 1
