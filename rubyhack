@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+
+H = :horizontal_wall
+V = :vertical_wall
+E = :empty
+C = :player
+M = :goblin
+
+require 'recs'
+
+require 'require_all'
+require_all './**/*.rb'
+
+Game.new

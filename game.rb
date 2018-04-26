@@ -36,6 +36,11 @@ class Game
   end
 
   def initialize
+    em = Recs::EntityManager.new
+
+    room = em.create_tagged_entity 'room'
+    em.add_component room, Room.new
+
     state = {
       room: [
         [H]*15,
