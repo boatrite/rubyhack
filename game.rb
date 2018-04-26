@@ -38,21 +38,15 @@ class Game
   def initialize
     state = {
       room: [
-        [H]*11,
-        [V, *[E]*9, V],
-        [V, *[E]*9, V],
-        [V, *[E]*9, V],
-        [V, *[E]*9, V],
-        [V, *[E]*9, V],
-        [V, *[E]*9, V],
-        [V, *[E]*9, V],
-        [V, *[E]*9, V],
-        [V, *[E]*9, V],
-        [H]*11
+        [H]*15,
+        [V, *[E]*13, V],
+        [V, *[E]*13, V],
+        [V, *[E]*13, V],
+        [H]*15
       ],
-      player_position: { x: 5, y: 5 },
+      player_position: { x: 1, y: 1 },
       player_hp: 10,
-      monster: { x: 8, y: 8 },
+      monster: { x: 10, y: 3 },
       monster_hp: 3
     }
     state[:room][state[:player_position][:y]][state[:player_position][:x]] = C
