@@ -22,7 +22,7 @@ class Game
     puts row.map(&method(:display_entity)).join('')
   end
 
-  def display_room(room_component)
+  def display_room_component(room_component)
     room_component.room.each do |row|
       display_row row
     end
@@ -34,15 +34,13 @@ class Game
     puts "Monster HP: #{state[:monster_hp]}"
     room_entity = em.get_entity_with_tag Tag::ROOM
     room_component = em.get_component_of_type room_entity, Room
-    display_room room_component
+    display_room_component room_component
   end
 
   def initialize
     em = Recs::EntityManager.new
 
-    room_component = Room.new
-    room = em.create_tagged_entity Tag::ROOM
-    em.add_component room, room_component
+    room_component = em.create_simple Tag::ROOM
 
     state = {
       player_position: { x: 1, y: 1 },
@@ -57,11 +55,9 @@ class Game
     render_state state, em
     loop do
       next_state = Marshal.load Marshal.dump state # Deep dup, so we can compare between states, go back, etc
-
       next_em = Marshal.load Marshal.dump em # Deep dup, so we can compare between them, go back, etc.
 
-      next_room_entity = next_em.get_entity_with_tag Tag::ROOM
-      next_room_component = next_em.get_component_of_type next_room_entity, Room
+      next_room_component = next_em.get_simple Tag::ROOM
 
       puts 'Do what?'
       command = STDIN.getch
@@ -97,10 +93,7 @@ class Game
       next_state, next_em = CollisionResolver.resolve(state, em, next_state, next_em)
 
       # Weird rendering code?
-
-      next_room_entity = next_em.get_entity_with_tag Tag::ROOM
-      next_room_component = next_em.get_component_of_type next_room_entity, Room
-
+      next_room_component = next_em.get_simple Tag::ROOM
       next_room_component.room[next_state[:player_position][:y]][next_state[:player_position][:x]] = C
       next_room_component.room[next_state[:monster][:y]][next_state[:monster][:x]] = M if next_state[:monster_hp].nonzero?
 

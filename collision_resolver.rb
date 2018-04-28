@@ -1,8 +1,7 @@
 class CollisionResolver
 
   def self.resolve(prev_state, prev_em, state, em)
-    room_entity = em.get_entity_with_tag Tag::ROOM
-    room_component = em.get_component_of_type room_entity, Room
+    room_component = em.get_simple Tag::ROOM
 
     entity_at_player_position = room_component.room[state[:player_position][:y]][state[:player_position][:x]]
     case entity_at_player_position

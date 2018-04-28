@@ -9,7 +9,7 @@ C = :player
 M = :goblin
 
 module Tag
-  ROOM = :room
+  ROOM = 'Room'
 end
 
 require 'recs'

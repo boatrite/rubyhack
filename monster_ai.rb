@@ -12,8 +12,7 @@ class MonsterAI
         state[:player_hp] -= 1
       end
 
-      room_entity = em.get_entity_with_tag Tag::ROOM
-      room_component = em.get_component_of_type room_entity, Room
+      room_component = em.get_simple Tag::ROOM
 
       next_monster_y = monster_y + [-1, 0, 1].sample
       next_monster_x = monster_x + [-1, 0, 1].sample
