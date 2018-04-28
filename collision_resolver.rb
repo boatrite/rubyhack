@@ -1,14 +1,15 @@
 class CollisionResolver
 
-  def self.resolve(prev_state, prev_em, state, em)
+  def self.resolve(prev_em, em)
     room_component = em.get_simple Tag::ROOM
 
-    entity_at_player_position = room_component.room[state[:player_position][:y]][state[:player_position][:x]]
+    player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position
+    entity_at_player_position = room_component.room[player_position.y][player_position.x]
     case entity_at_player_position
     when H, V
-      [prev_state, prev_em]
+      prev_em
     else
-      [state, em]
+      em
     end
   end
 end

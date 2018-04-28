@@ -10,6 +10,8 @@ M = :goblin
 
 module Tag
   ROOM = 'Room'
+  MONSTER = :monster
+  PLAYER = :player
 end
 
 require 'recs'
