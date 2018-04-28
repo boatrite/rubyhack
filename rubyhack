@@ -8,6 +8,10 @@ E = :empty
 C = :player
 M = :goblin
 
+module Tag
+  ROOM = :room
+end
+
 require 'recs'
 
 require 'require_all'
