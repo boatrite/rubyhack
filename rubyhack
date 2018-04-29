@@ -2,9 +2,11 @@
 
 require 'bundler/setup'
 
-H = :horizontal_wall
-V = :vertical_wall
-E = :empty
+H = '-'
+V = '|'
+E = '.'
+S = ' '
+
 C = :player
 M = :goblin
 

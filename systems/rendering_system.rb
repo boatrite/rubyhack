@@ -45,12 +45,8 @@ class RenderingSystem < Recs::System
 
   def display_entity(entity)
     case entity
-    when V
-      '|'
-    when H
-      '-'
-    when E
-      '.'
+    when V, H, E, S
+      entity
     when C
       '@'
     when M
