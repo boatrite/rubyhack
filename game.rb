@@ -22,10 +22,8 @@ class Game
     player_position = Position.new(1, 1, blocks: true)
     em.add_component player_entity, player_position
 
-    collision_system = CollisionSystem.new
     rendering_system = RenderingSystem.new
     monster_ai_system = MonsterAISystem.new
-    player_attack_system = PlayerAttackSystem.new
     player_input_system = PlayerInputSystem.new
 
     node_component.map.each_with_index do |row, i|
@@ -45,16 +43,12 @@ class Game
       #########################################################################
       # Mutates next_em
       #########################################################################
-      # It's possible that player_input_system, player_attack_system and
-      # collision_system should be combined somehow
       player_input_system.process_one_game_tick next_em
-      player_attack_system.process_one_game_tick em, next_em
       monster_ai_system.process_one_game_tick em, next_em
 
       #########################################################################
       # Doesn't mutate next_em -- returns next_em or (a potentially modified) em.
       #########################################################################
-      next_em = collision_system.process_one_game_tick em, next_em
 
       #########################################################################
       # Doesn't mutate next_em or return a different one. Might only ever be rendering.

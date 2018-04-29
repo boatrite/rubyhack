@@ -2,12 +2,14 @@
 
 require 'bundler/setup'
 
-H = '-'
-V = '|'
 E = '.'
 S = ' '
 
-WALLS = [H, V]
+module Wall
+  H = '-'
+  V = '|'
+end
+WALLS = Wall.constants.map &Wall.method(:const_get)
 
 C = :player
 M = :goblin
