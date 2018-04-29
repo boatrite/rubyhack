@@ -29,6 +29,7 @@ class Game
     player_input_system = PlayerInputSystem.new
 
     rendering_system.process_one_game_tick em
+
     loop do
       next_em = Marshal.load Marshal.dump em # Deep dup, so we can compare between them, go back, etc.
 

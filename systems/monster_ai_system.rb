@@ -23,8 +23,6 @@ class MonsterAISystem < Recs::System
       player_health.health -= 1
     end
 
-    room_component = em.get_simple Tag::ROOM
-
     next_monster_y = monster_position.y + [-1, 0, 1].sample
     next_monster_x = monster_position.x + [-1, 0, 1].sample
 
@@ -35,6 +33,7 @@ class MonsterAISystem < Recs::System
     }
 
     # If monster destination is not a wall or something else, move it there.
+    room_component = em.get_simple Tag::ROOM
     if ![H, V].include?(room_component.room[next_monster_y][next_monster_x]) && destination_empty
       monster_position.x = next_monster_x
       monster_position.y = next_monster_y
