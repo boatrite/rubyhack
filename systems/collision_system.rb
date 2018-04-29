@@ -1,6 +1,6 @@
-class CollisionResolver
+class CollisionSystem < Recs::System
 
-  def self.resolve(prev_em, em)
+  def process_one_game_tick(prev_em, em)
     room_component = em.get_simple Tag::ROOM
 
     player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position

@@ -17,6 +17,7 @@ class Game
     player_position = Position.new(1, 1)
     em.add_component player_entity, player_position
 
+    collision_system = CollisionSystem.new
     rendering_system = RenderingSystem.new
 
     rendering_system.process_one_game_tick em
@@ -57,7 +58,7 @@ class Game
       MonsterAI.resolve(em, next_em)
 
       # Doesn't mutate next_em -- returns next_em or (a potentially modified) em.
-      next_em = CollisionResolver.resolve(em, next_em)
+      next_em = collision_system.process_one_game_tick em, next_em
 
       em = next_em
 
