@@ -5,7 +5,7 @@ class Game
   def initialize
     em = Recs::EntityManager.new
 
-    room_component = em.create_simple Tag::ROOM
+    node_component = em.create_simple Tag::NODE
 
     monster_entity = em.create_tagged_entity Tag::MONSTER
     em.add_component monster_entity, Health.new(3)

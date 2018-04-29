@@ -33,8 +33,8 @@ class MonsterAISystem < Recs::System
     }
 
     # If monster destination is not a wall or something else, move it there.
-    room_component = em.get_simple Tag::ROOM
-    if ![H, V].include?(room_component.room[next_monster_i][next_monster_j]) && destination_empty
+    node_component = em.get_simple Tag::NODE
+    if ![H, V].include?(node_component.map[next_monster_i][next_monster_j]) && destination_empty
       monster_position.j = next_monster_j
       monster_position.i = next_monster_i
     end

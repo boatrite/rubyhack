@@ -11,7 +11,7 @@ C = :player
 M = :goblin
 
 module Tag
-  ROOM = 'Room'
+  NODE = 'Node'
   MONSTER = :monster
   PLAYER = :player
 end

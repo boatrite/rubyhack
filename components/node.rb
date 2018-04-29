@@ -1,5 +1,5 @@
-class Room < Recs::Component
-  attr_reader :room
+class Node < Recs::Component
+  attr_reader :map
 
   def initialize
     super
@@ -27,6 +27,6 @@ class Room < Recs::Component
                        |......|
                        -------
     MAP
-    @room = map.split("\n").map { |row| row.chars }
+    @map = map.split("\n").map { |row| row.chars }
   end
 end

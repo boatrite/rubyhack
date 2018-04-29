@@ -1,24 +1,24 @@
 class RenderingSystem < Recs::System
 
   def process_one_game_tick(em)
-    room_component = em.get_simple Tag::ROOM
-    room = Marshal.load Marshal.dump room_component.room # Dedupe so we don't change the actual room object
+    node_component = em.get_simple Tag::NODE
+    map = Marshal.load Marshal.dump node_component.map # Dedupe so we don't change the actual map object
                                                          # We only want to make changes for rendering then toss that.
     player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position
-    room[player_position.i][player_position.j] = C
+    map[player_position.i][player_position.j] = C
 
     monster_entities = em.get_entities_with_tag Tag::MONSTER
     monster_entities.each do |entity|
       monster_position = em.get_component_of_type entity, Position
-      room[monster_position.i][monster_position.j] = M
+      map[monster_position.i][monster_position.j] = M
     end
 
-    render_em em, room
+    render_em em, map
   end
 
   private
 
-  def render_em(em, room)
+  def render_em(em, map)
     puts `clear`
 
     player_health = em.get_component_of_type_from_tag Tag::PLAYER, Health
@@ -30,11 +30,11 @@ class RenderingSystem < Recs::System
       puts "Monster (#{entity[0..3]}) HP: #{monster_health.health}"
     end
 
-    display_room room
+    display_map map
   end
 
-  def display_room(room)
-    room.each do |row|
+  def display_map(map)
+    map.each do |row|
       display_row row
     end
   end
