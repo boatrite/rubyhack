@@ -6,8 +6,12 @@ E = '.'
 S = ' '
 
 module Wall
-  H = '-'
-  V = '|'
+  H = '─'
+  V = '│'
+  DR = '┌'
+  DL = '┐'
+  UR = '└'
+  UL = '┘'
 end
 WALLS = Wall.constants.map &Wall.method(:const_get)
 
