@@ -5,12 +5,12 @@ class RenderingSystem < Recs::System
     room = Marshal.load Marshal.dump room_component.room # Dedupe so we don't change the actual room object
                                                          # We only want to make changes for rendering then toss that.
     player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position
-    room[player_position.y][player_position.x] = C
+    room[player_position.i][player_position.j] = C
 
     monster_entities = em.get_entities_with_tag Tag::MONSTER
     monster_entities.each do |entity|
       monster_position = em.get_component_of_type entity, Position
-      room[monster_position.y][monster_position.x] = M
+      room[monster_position.i][monster_position.j] = M
     end
 
     render_em em, room

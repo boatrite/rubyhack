@@ -4,7 +4,7 @@ class CollisionSystem < Recs::System
     room_component = em.get_simple Tag::ROOM
 
     player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position
-    entity_at_player_position = room_component.room[player_position.y][player_position.x]
+    entity_at_player_position = room_component.room[player_position.i][player_position.j]
     case entity_at_player_position
     when H, V
       prev_em

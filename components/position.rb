@@ -1,9 +1,9 @@
 class Position < Recs::Component
-  attr_accessor :x, :y
+  attr_accessor :i, :j
 
-  def initialize(x, y)
+  def initialize(i, j)
     super()
-    @x = x
-    @y = y
+    @i = i
+    @j = j
   end
 end

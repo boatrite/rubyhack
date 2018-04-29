@@ -20,7 +20,7 @@ class PlayerAttackSystem < Recs::System
     monster_position = em.get_component_of_type entity, Position
 
     # Then deduct monster hp. The player doesn't change squares if it lives.
-    if player_position.y == monster_position.y && player_position.x == monster_position.x
+    if player_position.i == monster_position.i && player_position.j == monster_position.j
       monster_health = em.get_component_of_type entity, Health
       monster_health.health -= 1
 
@@ -28,8 +28,8 @@ class PlayerAttackSystem < Recs::System
         em.kill_entity entity
       else
         prev_player_position = prev_em.get_component_of_type_from_tag Tag::PLAYER, Position
-        player_position.y = prev_player_position.y
-        player_position.x = prev_player_position.x
+        player_position.i = prev_player_position.i
+        player_position.j = prev_player_position.j
       end
     end
   end

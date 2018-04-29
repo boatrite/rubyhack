@@ -6,16 +6,16 @@ class PlayerInputSystem < Recs::System
     case command
     when 'h'
       next_player_position = next_em.get_component_of_type_from_tag Tag::PLAYER, Position
-      next_player_position.x -= 1
+      next_player_position.j -= 1
     when 'j'
       next_player_position = next_em.get_component_of_type_from_tag Tag::PLAYER, Position
-      next_player_position.y += 1
+      next_player_position.i += 1
     when 'k'
       next_player_position = next_em.get_component_of_type_from_tag Tag::PLAYER, Position
-      next_player_position.y -= 1
+      next_player_position.i -= 1
     when 'l'
       next_player_position = next_em.get_component_of_type_from_tag Tag::PLAYER, Position
-      next_player_position.x += 1
+      next_player_position.j += 1
     when 'Q', 'q', 'exit'
       puts 'Bye!'
       exit
