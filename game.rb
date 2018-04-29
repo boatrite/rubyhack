@@ -49,7 +49,9 @@ class Game
         exit
       end
 
+      #########################################################################
       # Mutates next_em
+      #########################################################################
       # TODO Next:
       # These should be systems in an ECS. The bug where the goblin still deals
       # damage to the player would be fixed if the goblin were stored as an
@@ -59,12 +61,17 @@ class Game
       player_attack_system.process_one_game_tick em, next_em
       monster_ai_system.process_one_game_tick em, next_em
 
+      #########################################################################
       # Doesn't mutate next_em -- returns next_em or (a potentially modified) em.
+      #########################################################################
       next_em = collision_system.process_one_game_tick em, next_em
 
-      em = next_em
+      #########################################################################
+      # Doesn't mutate next_em or return a different one. Might only ever be rendering.
+      #########################################################################
+      rendering_system.process_one_game_tick next_em
 
-      rendering_system.process_one_game_tick em
+      em = next_em
     end
   end
 end
