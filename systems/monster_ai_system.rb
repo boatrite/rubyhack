@@ -1,6 +1,6 @@
-class MonsterAI
+class MonsterAISystem < Recs::System
 
-  def self.resolve(prev_em, em)
+  def process_one_game_tick(prev_em, em)
     prev_player_position = prev_em.get_component_of_type_from_tag Tag::PLAYER, Position
     last_player_y = prev_player_position.y
     last_player_x = prev_player_position.x

@@ -19,6 +19,7 @@ class Game
 
     collision_system = CollisionSystem.new
     rendering_system = RenderingSystem.new
+    monster_ai_system = MonsterAISystem.new
 
     rendering_system.process_one_game_tick em
     loop do
@@ -55,7 +56,7 @@ class Game
       #
       # Then it would no longer be called up in the MonsterAI system which damages the player.
       PlayerAttackResolver.resolve(em, next_em)
-      MonsterAI.resolve(em, next_em)
+      monster_ai_system.process_one_game_tick em, next_em
 
       # Doesn't mutate next_em -- returns next_em or (a potentially modified) em.
       next_em = collision_system.process_one_game_tick em, next_em
