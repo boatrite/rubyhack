@@ -12,6 +12,11 @@ class Game
     monster_position = Position.new(10, 3)
     em.add_component monster_entity, monster_position
 
+    monster_entity = em.create_tagged_entity Tag::MONSTER
+    em.add_component monster_entity, Health.new(3)
+    monster_position = Position.new(9, 2)
+    em.add_component monster_entity, monster_position
+
     player_entity = em.create_tagged_entity Tag::PLAYER
     em.add_component player_entity, Health.new(10)
     player_position = Position.new(1, 1)
