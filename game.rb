@@ -49,12 +49,6 @@ class Game
       #########################################################################
       # Mutates next_em
       #########################################################################
-      # TODO Next:
-      # These should be systems in an ECS. The bug where the goblin still deals
-      # damage to the player would be fixed if the goblin were stored as an
-      # entity which is deleted once it's HP falls to zero.
-      #
-      # Then it would no longer be called up in the MonsterAI system which damages the player.
       player_attack_system.process_one_game_tick em, next_em
       monster_ai_system.process_one_game_tick em, next_em
 
