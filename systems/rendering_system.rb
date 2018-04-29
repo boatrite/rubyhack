@@ -4,13 +4,11 @@ class RenderingSystem < Recs::System
     node_component = em.get_simple Tag::NODE
     map = Marshal.load Marshal.dump node_component.map # Dedupe so we don't change the actual map object
                                                          # We only want to make changes for rendering then toss that.
-    player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position
-    map[player_position.i][player_position.j] = C
-
-    monster_entities = em.get_entities_with_tag Tag::MONSTER
-    monster_entities.each do |entity|
-      monster_position = em.get_component_of_type entity, Position
-      map[monster_position.i][monster_position.j] = M
+    renderable_entities = em.get_entities_with_component_of_type Renderable
+    renderable_entities.each do |entity|
+      position = em.get_component_of_type entity, Position
+      renderable = em.get_component_of_type entity, Renderable
+      map[position.i][position.j] = renderable.char
     end
 
     render_em em, map

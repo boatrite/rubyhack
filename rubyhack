@@ -4,9 +4,6 @@ require 'bundler/setup'
 
 require 'colorized_string'
 
-E = '.'
-S = ' '
-
 module Wall
   H = '─'
   V = '│'
@@ -16,9 +13,6 @@ module Wall
   UL = '┘'
 end
 WALLS = Wall.constants.map &Wall.method(:const_get)
-
-C = '@'
-M = ColorizedString['g'].colorize(:green)
 
 module Tag
   NODE = 'Node'

@@ -54,6 +54,8 @@ class PlayerInputSystem < Recs::System
         player_position.i = next_player_i
         player_position.j = next_player_j
       end
+    #when '<'
+      #ascend_component = next_em.get_component_of_type_from_tag Tag::ASCEND, Edge
     when 'Q', 'q', 'exit'
       puts 'Bye!'
       exit
