@@ -4,6 +4,7 @@ require 'bundler/setup'
 
 require 'colorized_string'
 require 'rgl/adjacency'
+require 'rgl/dot'
 
 module Tag
   GRAPH = 'Graph'
