@@ -7,6 +7,8 @@ V = '|'
 E = '.'
 S = ' '
 
+WALLS = [H, V]
+
 C = :player
 M = :goblin
 
@@ -14,6 +16,7 @@ module Tag
   NODE = 'Node'
   MONSTER = :monster
   PLAYER = :player
+  WALL = :wall
 end
 
 require 'recs'

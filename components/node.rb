@@ -27,6 +27,6 @@ class Node < Recs::Component
                        |......|
                        -------
     MAP
-    @map = map.split("\n").map { |row| row.chars }
+    @map = map.split("\n").map(&:chars)
   end
 end

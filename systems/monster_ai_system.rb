@@ -29,12 +29,14 @@ class MonsterAISystem < Recs::System
     position_entities = em.get_entities_with_component_of_type Position
     destination_empty = position_entities.reduce(true) { |is_empty, entity|
       position = em.get_component_of_type entity, Position
-      is_empty && (next_monster_i != position.i || next_monster_j != position.j)
+      if position.blocks?
+        is_empty && (next_monster_i != position.i || next_monster_j != position.j)
+      else
+        is_empty
+      end
     }
 
-    # If monster destination is not a wall or something else, move it there.
-    node_component = em.get_simple Tag::NODE
-    if ![H, V].include?(node_component.map[next_monster_i][next_monster_j]) && destination_empty
+    if destination_empty
       monster_position.j = next_monster_j
       monster_position.i = next_monster_i
     end
