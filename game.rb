@@ -6,7 +6,7 @@ class Game
     em = Recs::EntityManager.new
 
     graph_entity = em.create_tagged_entity Tag::GRAPH
-    graph = Graph.new em
+    graph = Graph.new [:level_1,:level_2]
     em.add_component graph_entity, graph
 
     monster_entity = em.create_tagged_entity Tag::MONSTER

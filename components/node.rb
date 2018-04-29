@@ -1,5 +1,5 @@
 class Node < Recs::Component
-  attr_reader :map
+  attr_reader :map, :name
 
   def initialize(map, name)
     super()
