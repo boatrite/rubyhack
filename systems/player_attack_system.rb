@@ -1,6 +1,6 @@
-class PlayerAttackResolver
+class PlayerAttackSystem < Recs::System
 
-  def self.resolve(prev_em, em)
+  def process_one_game_tick(prev_em, em)
     # If where the player moves...
     player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position
     player_y = player_position.y
