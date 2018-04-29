@@ -15,8 +15,8 @@ module Wall
 end
 WALLS = Wall.constants.map &Wall.method(:const_get)
 
-C = :player
-M = :goblin
+C = '@'
+M = 'g'
 
 module Tag
   NODE = 'Node'

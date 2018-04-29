@@ -40,19 +40,6 @@ class RenderingSystem < Recs::System
   end
 
   def display_row(row)
-    puts row.map(&method(:display_entity)).join('')
-  end
-
-  def display_entity(entity)
-    case entity
-    when *WALLS, E, S
-      entity
-    when C
-      '@'
-    when M
-      'g'
-    else
-      raise "Don't know how to display entity: #{entity}"
-    end
+    puts row.join('')
   end
 end
