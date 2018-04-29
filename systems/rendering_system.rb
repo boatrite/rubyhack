@@ -1,6 +1,14 @@
 class RenderingSystem < Recs::System
 
   def process_one_game_tick(em)
+    room_component = em.get_simple Tag::ROOM
+    player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position
+    room_component.room[player_position.y][player_position.x] = C
+
+    monster_position = em.get_component_of_type_from_tag Tag::MONSTER, Position
+    monster_health = em.get_component_of_type_from_tag Tag::MONSTER, Health
+    room_component.room[monster_position.y][monster_position.x] = M if monster_health.health.nonzero?
+
     render_em em
   end
 

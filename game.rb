@@ -17,9 +17,6 @@ class Game
     player_position = Position.new(1, 1)
     em.add_component player_entity, player_position
 
-    room_component.room[player_position.y][player_position.x] = C
-    room_component.room[monster_position.y][monster_position.x] = M
-
     rendering_system = RenderingSystem.new
 
     rendering_system.process_one_game_tick em
@@ -61,15 +58,6 @@ class Game
 
       # Doesn't mutate next_em -- returns next_em or (a potentially modified) em.
       next_em = CollisionResolver.resolve(em, next_em)
-
-      # Weird rendering code?
-      next_room_component = next_em.get_simple Tag::ROOM
-      next_player_position = next_em.get_component_of_type_from_tag Tag::PLAYER, Position
-      next_room_component.room[next_player_position.y][next_player_position.x] = C
-
-      next_monster_position = next_em.get_component_of_type_from_tag Tag::MONSTER, Position
-      next_monster_health = next_em.get_component_of_type_from_tag Tag::MONSTER, Health
-      next_room_component.room[next_monster_position.y][next_monster_position.x] = M if next_monster_health.health.nonzero?
 
       em = next_em
 
