@@ -6,6 +6,10 @@ class Game
     em = Recs::EntityManager.new
 
     node_component = em.create_simple Tag::NODE
+    node_component.wall_coordinates.each do |i, j|
+      wall_entity = em.create_tagged_entity Tag::WALL
+      em.add_component wall_entity, Position.new(i, j, blocks: true)
+    end
 
     monster_entity = em.create_tagged_entity Tag::MONSTER
     em.add_component monster_entity, Health.new(3)
@@ -28,15 +32,6 @@ class Game
     rendering_system = RenderingSystem.new
     monster_ai_system = MonsterAISystem.new
     player_input_system = PlayerInputSystem.new
-
-    node_component.map.each_with_index do |row, i|
-      row.each_with_index do |x, j|
-        if WALLS.include? x
-          wall_entity = em.create_tagged_entity Tag::WALL
-          em.add_component wall_entity, Position.new(i, j, blocks: true)
-        end
-      end
-    end
 
     rendering_system.process_one_game_tick em
 

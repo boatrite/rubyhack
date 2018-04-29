@@ -4,16 +4,6 @@ require 'bundler/setup'
 
 require 'colorized_string'
 
-module Wall
-  H = '─'
-  V = '│'
-  DR = '┌'
-  DL = '┐'
-  UR = '└'
-  UL = '┘'
-end
-WALLS = Wall.constants.map &Wall.method(:const_get)
-
 module Tag
   NODE = 'Node'
   MONSTER = :monster
