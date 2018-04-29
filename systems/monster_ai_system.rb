@@ -28,11 +28,10 @@ class MonsterAISystem < Recs::System
 
       monster_position = em.get_component_of_type_from_tag Tag::MONSTER, Position
 
+      # If monster destination is not a wall or the player, move it there.
       if ![H, V].include?(room_component.room[next_monster_y][next_monster_x]) && !(next_monster_y == player_y && next_monster_x == player_x)
-        room_component.room[monster_position.y][monster_position.x] = E
         monster_position.x = next_monster_x
         monster_position.y = next_monster_y
-        room_component.room[monster_position.y][monster_position.x] = M
       end
     end
   end

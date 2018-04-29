@@ -16,6 +16,7 @@ class PlayerAttackSystem < Recs::System
       monster_health = em.get_component_of_type_from_tag Tag::MONSTER, Health
       monster_health.health -= 1
       monster_health.health = [0, monster_health.health].max
+
       unless monster_health.health == 0
         prev_player_position = prev_em.get_component_of_type_from_tag Tag::PLAYER, Position
         player_position.y = prev_player_position.y
