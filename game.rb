@@ -5,8 +5,13 @@ class Game
   def initialize
     em = Recs::EntityManager.new
 
-    node_component = em.create_simple Tag::NODE
-    node_component.wall_coordinates.each do |i, j|
+    # TODO I think this is where I want a Graph component that is a graph with graph methods.
+    # So I can maybe link them via the graph and stuff.
+    map_1 = File.read 'data/map_1.txt'
+    node_1_entity = em.create_tagged_entity Tag::NODE
+    node_1_component = Node.new(map_1)
+    em.add_component node_1_entity, node_1_component
+    node_1_component.wall_coordinates.each do |i, j|
       wall_entity = em.create_tagged_entity Tag::WALL
       em.add_component wall_entity, Position.new(i, j, blocks: true)
     end
