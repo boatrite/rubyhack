@@ -21,6 +21,8 @@ class RenderingSystem < Recs::System
   def render_em(em, map)
     puts `clear`
 
+    display_map map
+
     player_health = em.get_component_of_type_from_tag Tag::PLAYER, Health
     puts "Player HP: #{player_health.health}"
 
@@ -29,8 +31,6 @@ class RenderingSystem < Recs::System
       monster_health = em.get_component_of_type entity, Health
       puts "Monster (#{entity[0..3]}) HP: #{monster_health.health}"
     end
-
-    display_map map
   end
 
   def display_map(map)
