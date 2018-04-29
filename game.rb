@@ -26,34 +26,17 @@ class Game
     rendering_system = RenderingSystem.new
     monster_ai_system = MonsterAISystem.new
     player_attack_system = PlayerAttackSystem.new
+    player_input_system = PlayerInputSystem.new
 
     rendering_system.process_one_game_tick em
     loop do
       next_em = Marshal.load Marshal.dump em # Deep dup, so we can compare between them, go back, etc.
 
-      puts 'Do what?'
-      command = STDIN.getch
-      case command
-      when 'h'
-        next_player_position = next_em.get_component_of_type_from_tag Tag::PLAYER, Position
-        next_player_position.x -= 1
-      when 'j'
-        next_player_position = next_em.get_component_of_type_from_tag Tag::PLAYER, Position
-        next_player_position.y += 1
-      when 'k'
-        next_player_position = next_em.get_component_of_type_from_tag Tag::PLAYER, Position
-        next_player_position.y -= 1
-      when 'l'
-        next_player_position = next_em.get_component_of_type_from_tag Tag::PLAYER, Position
-        next_player_position.x += 1
-      when 'Q', 'q', 'exit'
-        puts 'Bye!'
-        exit
-      end
-
       #########################################################################
       # Mutates next_em
       #########################################################################
+      # It's likely that player_input_system and player_attack_system should be the same
+      player_input_system.process_one_game_tick next_em
       player_attack_system.process_one_game_tick em, next_em
       monster_ai_system.process_one_game_tick em, next_em
 
