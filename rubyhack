@@ -2,6 +2,8 @@
 
 require 'bundler/setup'
 
+require 'colorized_string'
+
 E = '.'
 S = ' '
 
@@ -16,7 +18,7 @@ end
 WALLS = Wall.constants.map &Wall.method(:const_get)
 
 C = '@'
-M = 'g'
+M = ColorizedString['g'].colorize(:green)
 
 module Tag
   NODE = 'Node'
