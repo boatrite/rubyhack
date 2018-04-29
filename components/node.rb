@@ -1,9 +1,10 @@
 class Node < Recs::Component
   attr_reader :map
 
-  def initialize(map)
+  def initialize(map, name)
     super()
     @map = map.split("\n").map(&:chars)
+    @name = name
   end
 
   def wall_coordinates
@@ -13,5 +14,9 @@ class Node < Recs::Component
         wall_characters.include?(x) ? [i, j] : nil
       end
     end.compact
+  end
+
+  def to_s
+    @name
   end
 end

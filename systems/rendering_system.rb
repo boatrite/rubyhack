@@ -1,7 +1,8 @@
 class RenderingSystem < Recs::System
 
   def process_one_game_tick(em)
-    node_component = em.get_simple Tag::NODE
+    graph_component = em.get_simple Tag::GRAPH
+    node_component = graph_component.current_vertex
     map = Marshal.load Marshal.dump node_component.map # Dedupe so we don't change the actual map object
                                                          # We only want to make changes for rendering then toss that.
     renderable_entities = em.get_entities_with_component_of_type Renderable
