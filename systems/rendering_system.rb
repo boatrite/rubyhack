@@ -2,13 +2,8 @@ class RenderingSystem < Recs::System
 
   def process_one_game_tick(em)
     graph_component = em.get_simple Tag::GRAPH
-    node_entities = em.get_entities_with_component_of_type(Node)
-    node_component = node_entities
-      .map { |entity| em.get_component_of_type entity, Node }
-      .find { |node_component| node_component.name == graph_component.current_vertex }
-
-    map = Marshal.load Marshal.dump node_component.map # Dedupe so we don't change the actual map object
-                                                         # We only want to make changes for rendering then toss that.
+    map = Marshal.load Marshal.dump graph_component.current_node.map # Dedupe so we don't change the actual map object
+                                                                # We only want to make changes for rendering then toss that.
     renderable_entities = em.get_entities_with_component_of_type Renderable
     renderable_entities.each do |entity|
       position = em.get_component_of_type entity, Position

@@ -1,11 +1,63 @@
 class Graph < Recs::Component
-  attr_reader :graph, :current_vertex
+  attr_reader :graph, :current_node_id
 
-  def initialize(graph_specification, current_vertex)
+  class Node
+    attr_reader :id, :map
+
+    def initialize(id, map)
+      @id = id
+      @map = map.split("\n").map(&:chars)
+    end
+
+    def wall_coordinates
+      wall_characters = %w(─ │ ┌ ┐ └ ┘)
+      @map.flat_map.with_index do |row, i|
+        row.map.with_index do |x, j|
+          wall_characters.include?(x) ? [i, j] : nil
+        end
+      end.compact
+    end
+
+    def to_s
+      @id
+    end
+  end
+
+  class Edge
+    attr_reader :source, :target, :source_i, :source_j, :target_i, :target_j
+
+    def initialize(source, target, source_i:, source_j:, target_i:, target_j:)
+      @source = source
+      @target = target
+      @source_i = source_i
+      @source_j = source_j
+      @target_i = target_i
+      @target_j = target_j
+    end
+  end
+
+  def initialize(graph_config, current_node_id)
     super()
 
-    @graph = RGL::AdjacencyGraph[*graph_specification]
+    rgl_data = graph_config.flat_map { |h| [h[:source], h[:target]] }
+    @graph = RGL::AdjacencyGraph[*rgl_data]
     @graph.write_to_graphic_file 'jpg'
-    @current_vertex = current_vertex
+    @current_node_id = current_node_id
+
+    @nodes = @graph.vertices.map do |node_id|
+      map = File.read "data/#{node_id}.txt"
+      Node.new node_id, map
+    end
+
+    @edges = @graph.edges.map do |rgl_edge|
+      source_node_id = rgl_edge.source
+      target_node_id = rgl_edge.target
+      edge_config = graph_config.find { |spec| spec[:source] == source_node_id && spec[:target] == target_node_id }
+      Edge.new source_node_id, target_node_id, edge_config.slice(:source_i, :source_j, :target_i, :target_j)
+    end
+  end
+
+  def current_node
+    @nodes.find { |node| node.id == @current_node_id }
   end
 end

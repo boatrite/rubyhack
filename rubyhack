@@ -7,8 +7,7 @@ require 'rgl/adjacency'
 require 'rgl/dot'
 
 module Tag
-  GRAPH = 'Graph'
-  NODE = 'Node'
+  GRAPH = 'Graph' # TODO Rename everything World instead of Graph?
   MONSTER = :monster
   PLAYER = :player
   WALL = :wall
