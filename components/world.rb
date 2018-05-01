@@ -1,4 +1,4 @@
-class Graph < Recs::Component
+class World < Recs::Component
   attr_reader :graph, :current_node_id
 
   class Node
@@ -36,10 +36,10 @@ class Graph < Recs::Component
     end
   end
 
-  def initialize(graph_config, current_node_id)
+  def initialize(world_config, current_node_id)
     super()
 
-    rgl_data = graph_config.flat_map { |h| [h[:source], h[:target]] }
+    rgl_data = world_config.flat_map { |h| [h[:source], h[:target]] }
     @graph = RGL::AdjacencyGraph[*rgl_data]
     @graph.write_to_graphic_file 'jpg'
     @current_node_id = current_node_id
@@ -52,7 +52,7 @@ class Graph < Recs::Component
     @edges = @graph.edges.map do |rgl_edge|
       source_node_id = rgl_edge.source
       target_node_id = rgl_edge.target
-      edge_config = graph_config.find { |spec| spec[:source] == source_node_id && spec[:target] == target_node_id }
+      edge_config = world_config.find { |spec| spec[:source] == source_node_id && spec[:target] == target_node_id }
       Edge.new source_node_id, target_node_id, edge_config.slice(:source_i, :source_j, :target_i, :target_j)
     end
   end

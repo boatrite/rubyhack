@@ -5,8 +5,8 @@ class Game
   def initialize
     em = Recs::EntityManager.new
 
-    graph_entity = em.create_tagged_entity Tag::GRAPH
-    graph = Graph.new [{
+    world_entity = em.create_tagged_entity Tag::WORLD
+    world = World.new [{
       source: :level_1,
       target: :level_2,
       source_i: 3,
@@ -14,7 +14,7 @@ class Game
       target_i: 2,
       target_j: 2
     }], :level_1
-    em.add_component graph_entity, graph
+    em.add_component world_entity, world
 
     monster_entity = em.create_tagged_entity Tag::MONSTER
     em.add_component monster_entity, Health.new(3)
@@ -37,9 +37,9 @@ class Game
     rendering_system = RenderingSystem.new
     monster_ai_system = MonsterAISystem.new
     player_input_system = PlayerInputSystem.new
-    graph_watch_system = GraphWatchSystem.new
+    world_watch_system = WorldWatchSystem.new
 
-    graph_watch_system.process_one_game_tick nil, em
+    world_watch_system.process_one_game_tick nil, em
     rendering_system.process_one_game_tick em
 
     loop do
@@ -49,7 +49,7 @@ class Game
       # (Possibly) Mutates next_em
       #########################################################################
       player_input_system.process_one_game_tick next_em
-      graph_watch_system.process_one_game_tick em, next_em
+      world_watch_system.process_one_game_tick em, next_em
       monster_ai_system.process_one_game_tick em, next_em
 
       #########################################################################

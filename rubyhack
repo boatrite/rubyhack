@@ -9,7 +9,7 @@ require 'rgl/dot'
 module Tag
   # Used for the world
   CONNECTION = :connection # Entity for where node and edge meet.
-  GRAPH = 'Graph' # TODO Rename everything World instead of Graph?
+  WORLD = 'World'
   WALL = :wall
 
   # Other
