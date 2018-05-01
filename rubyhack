@@ -7,10 +7,14 @@ require 'rgl/adjacency'
 require 'rgl/dot'
 
 module Tag
+  # Used for the world
+  CONNECTION = :connection # Entity for where node and edge meet.
   GRAPH = 'Graph' # TODO Rename everything World instead of Graph?
+  WALL = :wall
+
+  # Other
   MONSTER = :monster
   PLAYER = :player
-  WALL = :wall
 end
 
 require 'recs'
