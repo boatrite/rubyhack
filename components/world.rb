@@ -35,7 +35,7 @@ class World < Recs::Component
       @target_j = target_j
     end
 
-    def position_on_node(node_id)
+    def coordinates_on_node(node_id)
       node_id == @source ? [@source_i, @source_j] : [@target_i, @target_j]
     end
   end
