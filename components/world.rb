@@ -1,5 +1,6 @@
 class World < Recs::Component
-  attr_reader :graph, :current_node_id
+  attr_accessor :current_node_id
+  attr_reader :graph
 
   class Node
     attr_reader :id, :map
@@ -37,6 +38,10 @@ class World < Recs::Component
 
     def coordinates_on_node(node_id)
       node_id == @source ? [@source_i, @source_j] : [@target_i, @target_j]
+    end
+
+    def connecting_node_id(node_id)
+      node_id == @source ? @target : @source
     end
   end
 

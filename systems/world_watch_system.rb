@@ -34,9 +34,17 @@ class WorldWatchSystem < Recs::System
 
     world.current_node_edges.each do |edge|
       connection_entity = em.create_tagged_entity Tag::CONNECTION
-      i, j = edge.coordinates_on_node(world.current_node_id)
+      current_node_id = world.current_node_id
+      i, j = edge.coordinates_on_node(current_node_id)
       em.add_component connection_entity, Position.new(i, j, blocks: false)
       em.add_component connection_entity, Renderable.new('>')
+      connecting_node_id = edge.connecting_node_id(current_node_id)
+      connecting_i, connecting_j = edge.coordinates_on_node(connecting_node_id)
+      em.add_component connection_entity, PlayerInput.new('>', :change_current_node, {
+        connecting_node_id: connecting_node_id,
+        i: connecting_i,
+        j: connecting_j
+      })
     end
   end
 end

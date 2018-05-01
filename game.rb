@@ -11,8 +11,8 @@ class Game
       target: :level_2,
       source_i: 3,
       source_j: 3,
-      target_i: 2,
-      target_j: 2
+      target_i: 12,
+      target_j: 4
     }], :level_1
     em.add_component world_entity, world
 

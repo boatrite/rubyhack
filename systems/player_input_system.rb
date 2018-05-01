@@ -54,11 +54,16 @@ class PlayerInputSystem < Recs::System
         player_position.i = next_player_i
         player_position.j = next_player_j
       end
-    #when '<'
-      #ascend_component = next_em.get_component_of_type_from_tag Tag::ASCEND, Edge
     when 'Q', 'q', 'exit'
       puts 'Bye!'
       exit
+    else
+      player_input_entities = em.get_entities_with_component_of_type PlayerInput
+      player_inputs = player_input_entities.map { |entity| em.get_component_of_type entity, PlayerInput }
+      player_input = player_inputs.find { |player_input| player_input.key == command }
+      if player_input
+        player_input.on_key_press.call[em]
+      end
     end
   end
 
