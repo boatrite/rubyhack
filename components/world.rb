@@ -34,6 +34,10 @@ class World < Recs::Component
       @target_i = target_i
       @target_j = target_j
     end
+
+    def position_on_node(node_id)
+      node_id == @source ? [@source_i, @source_j] : [@target_i, @target_j]
+    end
   end
 
   def initialize(world_config, current_node_id)
@@ -59,5 +63,12 @@ class World < Recs::Component
 
   def current_node
     @nodes.find { |node| node.id == @current_node_id }
+  end
+
+  def current_node_edges
+    @graph.adjacent_vertices(@current_node_id).map do |adjacent_node_id|
+      @edges.find { |edge| (edge.source == @current_node_id && edge.target == adjacent_node_id) ||
+                    (edge.source == adjacent_node_id && edge.target == @current_node_id) }
+    end
   end
 end

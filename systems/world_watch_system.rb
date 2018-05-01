@@ -32,7 +32,11 @@ class WorldWatchSystem < Recs::System
       em.add_component wall_entity, Position.new(i, j, blocks: true)
     end
 
-    connection_entity = em.create_tagged_entity Tag::CONNECTION
-    em.add_component connection_entity, Renderable.new('>')
+    world.current_node_edges.each do |edge|
+      connection_entity = em.create_tagged_entity Tag::CONNECTION
+      i, j = edge.position_on_node(world.current_node_id)
+      em.add_component connection_entity, Position.new(i, j, blocks: false)
+      em.add_component connection_entity, Renderable.new('>')
+    end
   end
 end
