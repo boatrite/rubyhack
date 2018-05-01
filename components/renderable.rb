@@ -1,4 +1,6 @@
 class Renderable < Recs::Component
+  requires_component_of_type 'Position'
+
   attr_reader :char
 
   def initialize(char)

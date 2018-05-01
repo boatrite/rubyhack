@@ -33,5 +33,6 @@ class WorldWatchSystem < Recs::System
     end
 
     connection_entity = em.create_tagged_entity Tag::CONNECTION
+    em.add_component connection_entity, Renderable.new('>')
   end
 end
