@@ -3,13 +3,17 @@ class RenderingSystem < Recs::System
   def process_one_game_tick(em)
     world = em.get_simple Tag::WORLD
     map = Marshal.load Marshal.dump world.current_node.map # Dedupe so we don't change the actual map object
-                                                                # We only want to make changes for rendering then toss that.
+    # We only want to make changes for rendering then toss that.
     renderable_entities = em.get_entities_with_component_of_type Renderable
-    renderable_entities.each do |entity|
+    renderable_entities.map { |entity|
       position = em.get_component_of_type entity, Position
       renderable = em.get_component_of_type entity, Renderable
-      map[position.i][position.j] = renderable.char
-    end
+      [position, renderable]
+    }
+      .sort_by { |_, renderable| renderable.z }
+      .each do |position, renderable|
+        map[position.i][position.j] = renderable.char
+      end
 
     render_em em, map
   end

@@ -32,7 +32,7 @@ class Game
     em.add_component player_entity, Health.new(10)
     player_position = Position.new(1, 1, blocks: true)
     em.add_component player_entity, player_position
-    em.add_component player_entity, Renderable.new('@')
+    em.add_component player_entity, Renderable.new('@', z: 1)
 
     rendering_system = RenderingSystem.new
     monster_ai_system = MonsterAISystem.new
