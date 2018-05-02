@@ -15,7 +15,6 @@ class PlayerInput < Recs::Component
   def self.change_current_node(context, em)
     world = em.get_component World
     player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position
-
     return if player_position.i != context[:source_i] || player_position.j != context[:source_j]
     return if context[:source_node_id] != world.current_node_id
 

@@ -55,6 +55,8 @@ class PlayerInputSystem < Recs::System
         player_position.i = next_player_i
         player_position.j = next_player_j
       end
+    when 'd'
+      File.write 'development.log', em.dump_details
     when 'Q', 'q', 'exit'
       puts 'Bye!'
       exit

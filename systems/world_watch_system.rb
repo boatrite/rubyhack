@@ -5,26 +5,31 @@
 # the World component's current_node_id.
 class WorldWatchSystem < Recs::System
 
+  def initialize(em)
+    @initialized_node_ids = []
+
+    initialize_node em, em.get_component(World).current_node
+  end
+
   def process_one_game_tick(prev_em, em)
-    world = em.get_simple Tag::WORLD
+    world = em.get_component World
+    node_id = world.current_node_id
 
-    if prev_em.nil?
-      initialize_node em, world, world.current_node
-    else
-      node_id = world.current_node_id
+    prev_world = prev_em.get_component World
+    prev_node_id = prev_world.current_node_id
 
-      prev_world = prev_em.get_simple Tag::WORLD
-      prev_node_id = prev_world.current_node_id
-
-      if node_id != prev_node_id
-        initialize_node em, world, world.current_node
-      end
+    if node_id != prev_node_id && !@initialized_node_ids.include?(node_id)
+      initialize_node em, world.current_node
     end
   end
 
   private
 
-  def initialize_node(em, world, node)
+  def initialize_node(em, node)
+    @initialized_node_ids << node.id
+
+    world = em.get_component World
+
     node.wall_coordinates.each do |i, j|
       wall_entity = em.create_tagged_entity Tag::WALL
       em.add_component wall_entity, Position.new(i, j, node.id, blocks: true)

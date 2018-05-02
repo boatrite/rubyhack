@@ -37,9 +37,8 @@ class Game
     rendering_system = RenderingSystem.new
     monster_ai_system = MonsterAISystem.new
     player_input_system = PlayerInputSystem.new
-    world_watch_system = WorldWatchSystem.new
+    world_watch_system = WorldWatchSystem.new em
 
-    world_watch_system.process_one_game_tick nil, em
     rendering_system.process_one_game_tick em
 
     loop do
