@@ -53,11 +53,8 @@ class Game
       monster_ai_system.process_one_game_tick em, next_em
 
       #########################################################################
-      # Doesn't mutate next_em -- returns next_em or (a potentially modified) em.
-      #########################################################################
-
-      #########################################################################
-      # Doesn't mutate next_em or return a different one. Might only ever be rendering.
+      # Doesn't mutate next_em or return a different one. Might only ever be
+      # rendering.
       #########################################################################
       rendering_system.process_one_game_tick next_em
 

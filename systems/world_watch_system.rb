@@ -2,7 +2,7 @@
 #
 # It should be run once before the main loop to initialize the first wall
 # entities. In the main loop it should be run after anything that could change
-# the World component's current_vertex.
+# the World component's current_node_id.
 class WorldWatchSystem < Recs::System
 
   def process_one_game_tick(prev_em, em)
