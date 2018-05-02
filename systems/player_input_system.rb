@@ -64,7 +64,7 @@ class PlayerInputSystem < Recs::System
       player_input_entities = em.get_entities_with_component_of_type PlayerInput
       player_inputs = player_input_entities.map { |entity| em.get_component_of_type entity, PlayerInput }
       player_inputs
-        .select { |player_input| player_input.key == command }
+        .select { |player_input| player_input.key == command && player_input.trigger_conditions_met?(em) }
         .each do |player_input|
           player_input.on_key_press.call[em]
         end
