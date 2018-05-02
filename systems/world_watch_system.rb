@@ -17,8 +17,6 @@ class WorldWatchSystem < Recs::System
       prev_node_id = prev_world.current_node_id
 
       if node_id != prev_node_id
-        em.kill_entities em.get_entities_with_tag Tag::WALL
-        em.kill_entities em.get_entities_with_tag Tag::CONNECTION
         initialize_current_node em, world
       end
     end
@@ -29,21 +27,24 @@ class WorldWatchSystem < Recs::System
   def initialize_current_node(em, world)
     world.current_node.wall_coordinates.each do |i, j|
       wall_entity = em.create_tagged_entity Tag::WALL
-      em.add_component wall_entity, Position.new(i, j, blocks: true)
+      em.add_component wall_entity, Position.new(i, j, world.current_node_id, blocks: true)
     end
 
     world.current_node_edges.each do |edge|
       connection_entity = em.create_tagged_entity Tag::CONNECTION
       current_node_id = world.current_node_id
       i, j = edge.coordinates_on_node(current_node_id)
-      em.add_component connection_entity, Position.new(i, j, blocks: false)
+      em.add_component connection_entity, Position.new(i, j, world.current_node_id, blocks: false)
       em.add_component connection_entity, Renderable.new('>')
       connecting_node_id = edge.connecting_node_id(current_node_id)
       connecting_i, connecting_j = edge.coordinates_on_node(connecting_node_id)
       em.add_component connection_entity, PlayerInput.new('>', :change_current_node, {
+        current_node_id: world.current_node_id,
         connecting_node_id: connecting_node_id,
-        i: connecting_i,
-        j: connecting_j
+        source_i: i,
+        source_j: j,
+        target_i: connecting_i,
+        target_j: connecting_j
       })
     end
   end

@@ -10,6 +10,7 @@ class RenderingSystem < Recs::System
       renderable = em.get_component_of_type entity, Renderable
       [position, renderable]
     }
+      .select { |position, _| position.node_id == world.current_node_id }
       .sort_by { |_, renderable| renderable.z }
       .each do |position, renderable|
         map[position.i][position.j] = renderable.char

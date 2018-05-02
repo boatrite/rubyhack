@@ -40,9 +40,10 @@ class PlayerInputSystem < Recs::System
       end
 
       # Figure out if there is something in the way of where the player is trying to move.
-      position_entities = em.get_entities_with_component_of_type Position
-      destination_empty = position_entities.reduce(true) { |is_empty, entity|
-        position = em.get_component_of_type entity, Position
+      world = em.get_component World
+      positions = em.get_components(Position)
+        .select { |position| position.node_id == world.current_node_id }
+      destination_empty = positions.reduce(true) { |is_empty, position|
         if position.blocks?
           is_empty && (next_player_i != position.i || next_player_j != position.j)
         else
@@ -60,10 +61,11 @@ class PlayerInputSystem < Recs::System
     else
       player_input_entities = em.get_entities_with_component_of_type PlayerInput
       player_inputs = player_input_entities.map { |entity| em.get_component_of_type entity, PlayerInput }
-      player_input = player_inputs.find { |player_input| player_input.key == command }
-      if player_input
-        player_input.on_key_press.call[em]
-      end
+      player_inputs
+        .select { |player_input| player_input.key == command }
+        .each do |player_input|
+          player_input.on_key_press.call[em]
+        end
     end
   end
 

@@ -18,19 +18,19 @@ class Game
 
     monster_entity = em.create_tagged_entity Tag::MONSTER
     em.add_component monster_entity, Health.new(3)
-    monster_position = Position.new(3, 10, blocks: true)
+    monster_position = Position.new(3, 10, world.current_node_id, blocks: true)
     em.add_component monster_entity, monster_position
     em.add_component monster_entity, Renderable.new(ColorizedString['g'].colorize(:green))
 
     monster_entity = em.create_tagged_entity Tag::MONSTER
     em.add_component monster_entity, Health.new(3)
-    monster_position = Position.new(2, 9, blocks: true)
+    monster_position = Position.new(2, 9, world.current_node_id, blocks: true)
     em.add_component monster_entity, monster_position
     em.add_component monster_entity, Renderable.new(ColorizedString['g'].colorize(:green))
 
     player_entity = em.create_tagged_entity Tag::PLAYER
     em.add_component player_entity, Health.new(10)
-    player_position = Position.new(1, 1, blocks: true)
+    player_position = Position.new(1, 1, world.current_node_id, blocks: true)
     em.add_component player_entity, player_position
     em.add_component player_entity, Renderable.new('@', z: 1)
 

@@ -26,9 +26,10 @@ class MonsterAISystem < Recs::System
     next_monster_i = monster_position.i + [-1, 0, 1].sample
     next_monster_j = monster_position.j + [-1, 0, 1].sample
 
-    position_entities = em.get_entities_with_component_of_type Position
-    destination_empty = position_entities.reduce(true) { |is_empty, entity|
-      position = em.get_component_of_type entity, Position
+    positions = em.get_components(Position)
+      .select { |position| position.node_id == monster_position.node_id }
+
+    destination_empty = positions.reduce(true) { |is_empty, position|
       if position.blocks?
         is_empty && (next_monster_i != position.i || next_monster_j != position.j)
       else
