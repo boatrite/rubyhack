@@ -17,10 +17,10 @@ class PlayerInput < Recs::Component
     player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position
 
     return if player_position.i != context[:source_i] || player_position.j != context[:source_j]
-    return if context[:current_node_id] != world.current_node_id
+    return if context[:source_node_id] != world.current_node_id
 
-    world.current_node_id = context[:connecting_node_id]
-    player_position.node_id = context[:connecting_node_id]
+    world.current_node_id = context[:target_node_id]
+    player_position.node_id = context[:target_node_id]
     player_position.i = context[:target_i]
     player_position.j = context[:target_j]
   end

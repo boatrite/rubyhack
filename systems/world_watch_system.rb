@@ -9,7 +9,7 @@ class WorldWatchSystem < Recs::System
     world = em.get_simple Tag::WORLD
 
     if prev_em.nil?
-      initialize_current_node em, world
+      initialize_node em, world, world.current_node
     else
       node_id = world.current_node_id
 
@@ -17,32 +17,31 @@ class WorldWatchSystem < Recs::System
       prev_node_id = prev_world.current_node_id
 
       if node_id != prev_node_id
-        initialize_current_node em, world
+        initialize_node em, world, world.current_node
       end
     end
   end
 
   private
 
-  def initialize_current_node(em, world)
-    world.current_node.wall_coordinates.each do |i, j|
+  def initialize_node(em, world, node)
+    node.wall_coordinates.each do |i, j|
       wall_entity = em.create_tagged_entity Tag::WALL
-      em.add_component wall_entity, Position.new(i, j, world.current_node_id, blocks: true)
+      em.add_component wall_entity, Position.new(i, j, node.id, blocks: true)
     end
 
-    world.current_node_edges.each do |edge|
+    world.node_edges(node.id).each do |edge|
       connection_entity = em.create_tagged_entity Tag::CONNECTION
-      current_node_id = world.current_node_id
-      i, j = edge.coordinates_on_node(current_node_id)
-      em.add_component connection_entity, Position.new(i, j, world.current_node_id, blocks: false)
+      i, j = edge.coordinates_on_node(node.id)
+      em.add_component connection_entity, Position.new(i, j, node.id, blocks: false)
       em.add_component connection_entity, Renderable.new('>')
-      connecting_node_id = edge.connecting_node_id(current_node_id)
+      connecting_node_id = edge.connecting_node_id(node.id)
       connecting_i, connecting_j = edge.coordinates_on_node(connecting_node_id)
       em.add_component connection_entity, PlayerInput.new('>', :change_current_node, {
-        current_node_id: world.current_node_id,
-        connecting_node_id: connecting_node_id,
+        source_node_id: node.id,
         source_i: i,
         source_j: j,
+        target_node_id: connecting_node_id,
         target_i: connecting_i,
         target_j: connecting_j
       })

@@ -28,9 +28,13 @@ class World < Recs::Component
   end
 
   def current_node_edges
-    @graph.adjacent_vertices(@current_node_id).map do |adjacent_node_id|
-      @edges.find { |edge| (edge.source == @current_node_id && edge.target == adjacent_node_id) ||
-                    (edge.source == adjacent_node_id && edge.target == @current_node_id) }
+    node_edges @current_node_id
+  end
+
+  def node_edges(node_id)
+    @graph.adjacent_vertices(node_id).map do |adjacent_node_id|
+      @edges.find { |edge| (edge.source == node_id && edge.target == adjacent_node_id) ||
+                    (edge.source == adjacent_node_id && edge.target == node_id) }
     end
   end
 
