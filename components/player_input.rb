@@ -1,10 +1,14 @@
 class PlayerInput < Recs::Component
-  attr_reader :key, :method_name, :context
+  attr_reader :key, :handler_class, :context
 
-  def initialize(key, method_name, context)
+  def initialize(key, handler_class, context)
     super()
     @key = key
-    @method_name = method_name
+    @handler_class = handler_class
     @context = context
+  end
+
+  def handler
+    @handler_class.new @context
   end
 end

@@ -42,7 +42,7 @@ class WorldWatchSystem < Recs::System
       em.add_component connection_entity, Renderable.new('>')
       connecting_node_id = edge.connecting_node_id(node.id)
       connecting_i, connecting_j = edge.coordinates_on_node(connecting_node_id)
-      em.add_component connection_entity, PlayerInput.new('>', :change_current_node, {
+      em.add_component connection_entity, PlayerInput.new('>', PlayerInputSystem::ChangeCurrentNode, {
         source_node_id: node.id,
         source_i: i,
         source_j: j,

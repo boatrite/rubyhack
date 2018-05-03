@@ -64,9 +64,9 @@ class PlayerInputSystem < Recs::System
       player_input_entities = em.get_entities_with_component_of_type PlayerInput
       player_inputs = player_input_entities.map { |entity| em.get_component_of_type entity, PlayerInput }
       player_inputs
-        .select { |player_input| player_input.key == command && PlayerInputSystem.public_send("#{player_input.method_name}_conditions_met?", player_input.context, em) }
+        .select { |player_input| player_input.key == command && player_input.handler.valid?(em) }
         .each do |player_input|
-          PlayerInputSystem.public_send(player_input.method_name, player_input.context, em)
+          player_input.handler.fire em
         end
     end
   end
@@ -88,20 +88,30 @@ class PlayerInputSystem < Recs::System
     end
   end
 
-  def self.change_current_node(context, em)
-    world = em.get_component World
-    player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position
-    world.current_node_id = context[:target_node_id]
-    player_position.node_id = context[:target_node_id]
-    player_position.i = context[:target_i]
-    player_position.j = context[:target_j]
+  class InputHandler
+    attr_reader :context
+
+    def initialize(context)
+      @context = context
+    end
   end
 
-  def self.change_current_node_conditions_met?(context, em)
-    world = em.get_component World
-    player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position
-    player_position.i == context[:source_i] &&
-      player_position.j == context[:source_j] &&
-      context[:source_node_id] == world.current_node_id
+  class ChangeCurrentNode < InputHandler
+    def valid?(em)
+      world = em.get_component World
+      player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position
+      player_position.i == context[:source_i] &&
+        player_position.j == context[:source_j] &&
+        context[:source_node_id] == world.current_node_id
+    end
+
+    def fire(em)
+      world = em.get_component World
+      player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position
+      world.current_node_id = context[:target_node_id]
+      player_position.node_id = context[:target_node_id]
+      player_position.i = context[:target_i]
+      player_position.j = context[:target_j]
+    end
   end
 end
