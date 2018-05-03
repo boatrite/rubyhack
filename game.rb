@@ -36,7 +36,7 @@ class Game
 
     rendering_system = RenderingSystem.new
     monster_ai_system = MonsterAISystem.new
-    player_input_system = PlayerInputSystem.new
+    player_input_system = PlayerInputSystem.new em
     world_watch_system = WorldWatchSystem.new em
 
     rendering_system.process_one_game_tick em
