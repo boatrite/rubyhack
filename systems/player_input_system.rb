@@ -64,9 +64,9 @@ class PlayerInputSystem < Recs::System
       player_input_entities = em.get_entities_with_component_of_type PlayerInput
       player_inputs = player_input_entities.map { |entity| em.get_component_of_type entity, PlayerInput }
       player_inputs
-        .select { |player_input| player_input.key == command && player_input.trigger_conditions_met?(em) }
+        .select { |player_input| player_input.key == command && PlayerInputSystem.public_send("#{player_input.method_name}_conditions_met?", player_input.context, em) }
         .each do |player_input|
-          player_input.on_key_press.call[em]
+          PlayerInputSystem.public_send(player_input.method_name, player_input.context, em)
         end
     end
   end
@@ -86,5 +86,22 @@ class PlayerInputSystem < Recs::System
       monster_health.health -= 1
       em.kill_entity entity if monster_health.health <= 0
     end
+  end
+
+  def self.change_current_node(context, em)
+    world = em.get_component World
+    player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position
+    world.current_node_id = context[:target_node_id]
+    player_position.node_id = context[:target_node_id]
+    player_position.i = context[:target_i]
+    player_position.j = context[:target_j]
+  end
+
+  def self.change_current_node_conditions_met?(context, em)
+    world = em.get_component World
+    player_position = em.get_component_of_type_from_tag Tag::PLAYER, Position
+    player_position.i == context[:source_i] &&
+      player_position.j == context[:source_j] &&
+      context[:source_node_id] == world.current_node_id
   end
 end
