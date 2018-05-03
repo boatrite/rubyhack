@@ -1,6 +1,7 @@
 class PlayerInputSystem < Recs::System
 
   def initialize(em)
+    # Seems weird for these to be entities. Not sure how else to do it for now.
     em.add_component em.create_basic_entity, PlayerInput.new('h', DoLeft)
     em.add_component em.create_basic_entity, PlayerInput.new('l', DoRight)
     em.add_component em.create_basic_entity, PlayerInput.new('k', DoUp)
@@ -9,26 +10,21 @@ class PlayerInputSystem < Recs::System
     em.add_component em.create_basic_entity, PlayerInput.new('u', DoUpRight)
     em.add_component em.create_basic_entity, PlayerInput.new('b', DoDownLeft)
     em.add_component em.create_basic_entity, PlayerInput.new('n', DoDownRight)
+
+    em.add_component em.create_basic_entity, PlayerInput.new('d', DumpDetails)
+    em.add_component em.create_basic_entity, PlayerInput.new('S', SaveAndQuit)
   end
 
   def process_one_game_tick(em)
     puts 'Do what?'
     command = STDIN.getch
-    case command
-    when 'd'
-      File.write 'development.log', em.dump_details
-    when 'Q', 'q', 'exit'
-      puts 'Bye!'
-      exit
-    else
-      player_input_entities = em.get_entities_with_component_of_type PlayerInput
-      player_inputs = player_input_entities.map { |entity| em.get_component_of_type entity, PlayerInput }
-      player_inputs
-        .select { |player_input| player_input.key == command && player_input.handler.valid?(em) }
-        .each do |player_input|
+    player_input_entities = em.get_entities_with_component_of_type PlayerInput
+    player_inputs = player_input_entities.map { |entity| em.get_component_of_type entity, PlayerInput }
+    player_inputs
+      .select { |player_input| player_input.key == command && player_input.handler.valid?(em) }
+      .each do |player_input|
         player_input.handler.fire em
       end
-    end
   end
 
   private
@@ -42,6 +38,19 @@ class PlayerInputSystem < Recs::System
 
     def valid?(em)
       true
+    end
+  end
+
+  class DumpDetails < InputHandler
+    def fire(em)
+      File.write 'development.log', em.dump_details
+    end
+  end
+
+  class SaveAndQuit < InputHandler
+    def fire(em)
+      puts 'Bye!'
+      exit
     end
   end
 
