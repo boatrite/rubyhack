@@ -2,43 +2,13 @@ require 'io/console'
 
 class Game
 
-  def initialize
-    em = Recs::EntityManager.new
-
-    world_entity = em.create_tagged_entity Tag::WORLD
-    world = World.new [{
-      source: :level_1,
-      target: :level_2,
-      source_i: 3,
-      source_j: 3,
-      target_i: 12,
-      target_j: 4
-    }], :level_1
-    em.add_component world_entity, world
-
-    monster_entity = em.create_tagged_entity Tag::MONSTER
-    em.add_component monster_entity, Health.new(3)
-    monster_position = Position.new(3, 10, world.current_node_id, blocks: true)
-    em.add_component monster_entity, monster_position
-    em.add_component monster_entity, Renderable.new(ColorizedString['g'].colorize(:green))
-
-    monster_entity = em.create_tagged_entity Tag::MONSTER
-    em.add_component monster_entity, Health.new(3)
-    monster_position = Position.new(2, 9, world.current_node_id, blocks: true)
-    em.add_component monster_entity, monster_position
-    em.add_component monster_entity, Renderable.new(ColorizedString['g'].colorize(:green))
-
-    player_entity = em.create_tagged_entity Tag::PLAYER
-    em.add_component player_entity, Health.new(10)
-    player_position = Position.new(1, 1, world.current_node_id, blocks: true)
-    em.add_component player_entity, player_position
-    em.add_component player_entity, Renderable.new('@', z: 1)
-
+  def initialize(em)
     rendering_system = RenderingSystem.new
     monster_ai_system = MonsterAISystem.new
-    player_input_system = PlayerInputSystem.new em
-    world_watch_system = WorldWatchSystem.new em
+    player_input_system = PlayerInputSystem.new
+    world_watch_system = WorldWatchSystem.new
 
+    world_watch_system.process_one_game_tick nil, em
     rendering_system.process_one_game_tick em
 
     loop do

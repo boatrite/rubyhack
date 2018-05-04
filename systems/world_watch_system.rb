@@ -5,21 +5,23 @@
 # the World component's current_node_id.
 class WorldWatchSystem < Recs::System
 
-  def initialize(em)
+  def initialize
     @initialized_node_ids = []
-
-    initialize_node em, em.get_component(World).current_node
   end
 
   def process_one_game_tick(prev_em, em)
-    world = em.get_component World
-    node_id = world.current_node_id
+    if prev_em.nil?
+      initialize_node em, em.get_component(World).current_node
+    else
+      world = em.get_component World
+      node_id = world.current_node_id
 
-    prev_world = prev_em.get_component World
-    prev_node_id = prev_world.current_node_id
+      prev_world = prev_em.get_component World
+      prev_node_id = prev_world.current_node_id
 
-    if node_id != prev_node_id && !@initialized_node_ids.include?(node_id)
-      initialize_node em, world.current_node
+      if node_id != prev_node_id && !@initialized_node_ids.include?(node_id)
+        initialize_node em, world.current_node
+      end
     end
   end
 

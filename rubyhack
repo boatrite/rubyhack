@@ -17,9 +17,59 @@ module Tag
   PLAYER = :player
 end
 
+SAVEFILE = 'savefile'
+
 require 'recs'
 
 require 'require_all'
 require_all './**/*.rb'
 
-Game.new
+if File.exist? SAVEFILE
+  em = Marshal.load File.read SAVEFILE
+else
+  em = Recs::EntityManager.new
+
+  # Seems weird for these to be entities. Not sure how else to do it for now.
+  em.add_component em.create_basic_entity, PlayerInput.new('h', PlayerInputSystem::DoLeft)
+  em.add_component em.create_basic_entity, PlayerInput.new('l', PlayerInputSystem::DoRight)
+  em.add_component em.create_basic_entity, PlayerInput.new('k', PlayerInputSystem::DoUp)
+  em.add_component em.create_basic_entity, PlayerInput.new('j', PlayerInputSystem::DoDown)
+  em.add_component em.create_basic_entity, PlayerInput.new('y', PlayerInputSystem::DoUpLeft)
+  em.add_component em.create_basic_entity, PlayerInput.new('u', PlayerInputSystem::DoUpRight)
+  em.add_component em.create_basic_entity, PlayerInput.new('b', PlayerInputSystem::DoDownLeft)
+  em.add_component em.create_basic_entity, PlayerInput.new('n', PlayerInputSystem::DoDownRight)
+
+  em.add_component em.create_basic_entity, PlayerInput.new('d', PlayerInputSystem::DumpDetails)
+  em.add_component em.create_basic_entity, PlayerInput.new('S', PlayerInputSystem::SaveAndQuit)
+
+  world_entity = em.create_tagged_entity Tag::WORLD
+  world = World.new [{
+    source: :level_1,
+    target: :level_2,
+    source_i: 3,
+    source_j: 3,
+    target_i: 12,
+    target_j: 4
+  }], :level_1
+  em.add_component world_entity, world
+
+  monster_entity = em.create_tagged_entity Tag::MONSTER
+  em.add_component monster_entity, Health.new(3)
+  monster_position = Position.new(3, 10, world.current_node_id, blocks: true)
+  em.add_component monster_entity, monster_position
+  em.add_component monster_entity, Renderable.new(ColorizedString['g'].colorize(:green))
+
+  monster_entity = em.create_tagged_entity Tag::MONSTER
+  em.add_component monster_entity, Health.new(3)
+  monster_position = Position.new(2, 9, world.current_node_id, blocks: true)
+  em.add_component monster_entity, monster_position
+  em.add_component monster_entity, Renderable.new(ColorizedString['g'].colorize(:green))
+
+  player_entity = em.create_tagged_entity Tag::PLAYER
+  em.add_component player_entity, Health.new(10)
+  player_position = Position.new(1, 1, world.current_node_id, blocks: true)
+  em.add_component player_entity, player_position
+  em.add_component player_entity, Renderable.new('@', z: 1)
+end
+
+Game.new em
