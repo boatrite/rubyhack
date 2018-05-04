@@ -45,6 +45,8 @@ class PlayerInputSystem < Recs::System
       @next_player_position = Marshal.load Marshal.dump(
         @em.get_component_of_type_from_tag Tag::PLAYER, Position
       )
+      yield
+      process_movement
     end
 
     private
@@ -92,69 +94,69 @@ class PlayerInputSystem < Recs::System
 
   class DoLeft < DoDirectionHandler
     def fire
-      super
-      @next_player_position.j -= 1
-      process_movement
+      super do
+        @next_player_position.j -= 1
+      end
     end
   end
 
   class DoRight < DoDirectionHandler
     def fire
-      super
-      @next_player_position.j += 1
-      process_movement
+      super do
+        @next_player_position.j += 1
+      end
     end
   end
 
   class DoUp < DoDirectionHandler
     def fire
-      super
-      @next_player_position.i -= 1
-      process_movement
+      super do
+        @next_player_position.i -= 1
+      end
     end
   end
 
   class DoDown < DoDirectionHandler
     def fire
-      super
-      @next_player_position.i += 1
-      process_movement
+      super do
+        @next_player_position.i += 1
+      end
     end
   end
 
   class DoUpLeft < DoDirectionHandler
     def fire
-      super
-      @next_player_position.i -= 1
-      @next_player_position.j -= 1
-      process_movement
+      super do
+        @next_player_position.i -= 1
+        @next_player_position.j -= 1
+      end
     end
   end
 
   class DoUpRight < DoDirectionHandler
     def fire
-      super
-      @next_player_position.i -= 1
-      @next_player_position.j += 1
-      process_movement
+      super do
+        @next_player_position.i -= 1
+        @next_player_position.j += 1
+      end
     end
   end
 
   class DoDownLeft < DoDirectionHandler
     def fire
-      super
-      @next_player_position.i += 1
-      @next_player_position.j -= 1
-      process_movement
+      super do
+        @next_player_position.i += 1
+        @next_player_position.j -= 1
+      end
     end
   end
 
   class DoDownRight < DoDirectionHandler
     def fire
-      super
-      @next_player_position.i += 1
-      @next_player_position.j += 1
-      process_movement
+      super do
+        @next_player_position.i += 1
+        @next_player_position.j += 1
+      end
     end
   end
 
