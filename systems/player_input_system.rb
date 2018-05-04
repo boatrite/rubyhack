@@ -59,16 +59,23 @@ class PlayerInputSystem < Recs::System
       # the entity if it is killed which will let the destination_empty check
       # pass for the spot the enemy had, so the player will move into that
       # spot.
-      monster_entities = @em.get_entities_with_tag Tag::MONSTER
-      monster_entities.each do |entity|
-        process_attacking_monster entity
-      end
+
+      # TODO What do you think about switching order of params entity and Position,
+      # so that it's @em.get_component_of_type Position, entity
+      # Turns the map into `monster_entities.map &@em.method(:get_component_of_type).curry(2)[Position]`
+
+      monster_entities = @em.get_entities_with_tag(Tag::MONSTER)
+        .map { |entity| [entity, @em.get_component_of_type(entity, Position)] }
+        .select { |_, monster_position| @next_player_position.at? monster_position }
+        .map { |entity, _| [entity, @em.get_component_of_type(entity, Health)] }
+        .each { |_, monster_health| monster_health.health -= 1 }
+        .select { |_, monster_health| monster_health.health <= 0 }
+        .each { |entity, _| @em.kill_entity entity }
 
       # Figure out if there is something in the way of where the player is trying to move.
       world = @em.get_component World
       destination_empty = @em.get_components(Position).lazy
-        .select { |position| position.node_id == world.current_node_id }
-        .select { |position| @next_player_position.i == position.i && @next_player_position.j == position.j }
+        .select(&@next_player_position.method(:at?))
         .select(&:blocks?)
         .none?
 
@@ -77,21 +84,6 @@ class PlayerInputSystem < Recs::System
         player_position.i = @next_player_position.i
         player_position.j = @next_player_position.j
       end
-    end
-
-    def process_attacking_monster(entity)
-      # Matches where the monster is... (since it could have moved, but not necessarily).
-      #
-      # Since this system runs before MonsterAISystem, the monsters haven't moved yet.
-      # That's why we get monster position from em instead of prev_em.
-      monster_position = @em.get_component_of_type entity, Position
-      return if monster_position.node_id != @next_player_position.node_id
-      return if @next_player_position.i != monster_position.i || @next_player_position.j != monster_position.j
-
-      # Then deduct monster hp.
-      monster_health = @em.get_component_of_type entity, Health
-      monster_health.health -= 1
-      @em.kill_entity entity if monster_health.health <= 0
     end
   end
 

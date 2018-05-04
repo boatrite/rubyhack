@@ -13,4 +13,10 @@ class Position < Recs::Component
   def blocks?
     @blocks
   end
+
+  def at?(other_position)
+    other_position.node_id == @node_id &&
+      other_position.i == @i &&
+      other_position.j == @j
+  end
 end

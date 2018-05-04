@@ -12,30 +12,25 @@ class MonsterAISystem < Recs::System
     monster_position = em.get_component_of_type entity, Position
     return if prev_player_position.node_id != monster_position.node_id
 
-    player_health = em.get_component_of_type_from_tag Tag::PLAYER, Health
-    monster_health = em.get_component_of_type entity, Health
-
+    # Attack player if next to them.
     if prev_player_position.j.between?(monster_position.j-1, monster_position.j+1) && prev_player_position.i.between?(monster_position.i-1, monster_position.i+1)
+      player_health = em.get_component_of_type_from_tag Tag::PLAYER, Health
       player_health.health -= 1
     end
 
-    next_monster_i = monster_position.i + [-1, 0, 1].sample
-    next_monster_j = monster_position.j + [-1, 0, 1].sample
+    # Then try to move away.
+    next_monster_position = Marshal.load Marshal.dump monster_position
+    next_monster_position.i += [-1, 0, 1].sample
+    next_monster_position.j += [-1, 0, 1].sample
 
-    positions = em.get_components(Position)
-      .select { |position| position.node_id == monster_position.node_id }
-
-    destination_empty = positions.reduce(true) { |is_empty, position|
-      if position.blocks?
-        is_empty && (next_monster_i != position.i || next_monster_j != position.j)
-      else
-        is_empty
-      end
-    }
+    destination_empty = em.get_components(Position)
+      .select(&next_monster_position.method(:at?))
+      .select(&:blocks?)
+      .none?
 
     if destination_empty
-      monster_position.j = next_monster_j
-      monster_position.i = next_monster_i
+      monster_position.i = next_monster_position.i
+      monster_position.j = next_monster_position.j
     end
   end
 end
