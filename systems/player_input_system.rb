@@ -1,3 +1,5 @@
+require 'yaml'
+
 class PlayerInputSystem < Recs::System
 
   def process_one_game_tick(em)
@@ -35,6 +37,7 @@ class PlayerInputSystem < Recs::System
   class SaveAndQuit < InputHandler
     def fire
       File.write SAVEFILE, Marshal.dump(@em)
+      File.write 'development.yaml', YAML.dump(@em)
       puts 'Bye!'
       exit
     end
