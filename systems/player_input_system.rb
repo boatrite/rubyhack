@@ -64,6 +64,13 @@ class PlayerInputSystem < Recs::System
       # so that it's @em.get_component_of_type Position, entity
       # Turns the map into `monster_entities.map &@em.method(:get_component_of_type).curry(2)[Position]`
 
+      # Get all monsters...
+      # ...and their positions.
+      # Keep the one(s) the player is moving into (i.e. fighting).
+      # Get their health...
+      # ...and deal them damage.
+      # Find the ones that are dead...
+      # ...and remove them from the game.
       monster_entities = @em.get_entities_with_tag(Tag::MONSTER)
         .map { |entity| [entity, @em.get_component_of_type(entity, Position)] }
         .select { |_, monster_position| @next_player_position.at? monster_position }
