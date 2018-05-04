@@ -7,8 +7,4 @@ class PlayerInput < Recs::Component
     @handler_class = handler_class
     @context = context
   end
-
-  def handler
-    @handler_class.new @context
-  end
 end
