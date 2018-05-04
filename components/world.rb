@@ -16,10 +16,13 @@ class World < Recs::Component
     end
 
     @edges = @graph.edges.map do |rgl_edge|
-      source_node_id = rgl_edge.source
-      target_node_id = rgl_edge.target
-      edge_config = world_config.find { |spec| spec[:source] == source_node_id && spec[:target] == target_node_id }
-      Edge.new source_node_id, target_node_id, edge_config.slice(:source_i, :source_j, :target_i, :target_j)
+      node_1_id = rgl_edge.source
+      node_A_id = rgl_edge.target
+      if edge_config = world_config.find { |spec| spec[:source] == node_1_id && spec[:target] == node_A_id }
+        Edge.new node_1_id, node_A_id, edge_config.slice(:source_i, :source_j, :target_i, :target_j)
+      elsif edge_config = world_config.find { |spec| spec[:source] == node_A_id && spec[:target] == node_1_id }
+        Edge.new node_A_id, node_1_id, edge_config.slice(:source_i, :source_j, :target_i, :target_j)
+      end
     end
   end
 

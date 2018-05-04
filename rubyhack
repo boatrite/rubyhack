@@ -50,6 +50,20 @@ else
     source_j: 3,
     target_i: 12,
     target_j: 4
+  },{
+    source: :level_2,
+    target: :level_3,
+    source_i: 7,
+    source_j: 20,
+    target_i: 3,
+    target_j: 3
+  },{
+    source: :level_3,
+    target: :level_1,
+    source_i: 2,
+    source_j: 15,
+    target_i: 10,
+    target_j: 34
   }], :level_1
   em.add_component world_entity, world
 
