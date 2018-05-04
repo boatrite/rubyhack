@@ -6,7 +6,7 @@ class PlayerInputSystem < Recs::System
     puts 'Do what?'
     key_pressed = STDIN.getch
     player_inputs = em.get_components(PlayerInput)
-    player_inputs.lazy
+    player_inputs
       .select { |player_input| player_input.key == key_pressed }
       .map { |player_input| player_input.handler_class.new(player_input.context, em) }
       .select(&:valid?)
@@ -167,6 +167,11 @@ class PlayerInputSystem < Recs::System
     def fire
       world = @em.get_component World
       player_position = @em.get_component_of_type_from_tag Tag::PLAYER, Position
+      # Consider having some system (WorldWatch probably) look for changes to
+      # player_position.node_id and automatically change world.current_node_id.
+      #
+      # That should work given the order and that other systems besides
+      # PlayerInputSystem are run after WorldWatch system.
       world.current_node_id = context[:target_node_id]
       player_position.node_id = context[:target_node_id]
       player_position.i = context[:target_i]
