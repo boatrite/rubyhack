@@ -71,13 +71,21 @@ else
   em.add_component monster_entity, Health.new(3)
   monster_position = Position.new(3, 10, world.current_node_id, blocks: true)
   em.add_component monster_entity, monster_position
-  em.add_component monster_entity, Renderable.new(ColorizedString['g'].colorize(:green))
+  # TODO As a general rule, I think I want to keep specific configuration
+  # things out of the em. Instead of passing a green g and z-index of 1 to
+  # Renderable, should it just have a key to a thing that fetches those values?
+  #
+  # Then those values could be changed and even if there were a previous
+  # savefile, the game that spins up would have the new rendering.
+  #
+  # ^ Also includes keybindings (PlayerInput component shouldn't exist).
+  em.add_component monster_entity, Renderable.new(ColorizedString['g'].colorize(:green), z: 1)
 
   monster_entity = em.create_tagged_entity Tag::MONSTER
   em.add_component monster_entity, Health.new(3)
   monster_position = Position.new(2, 9, world.current_node_id, blocks: true)
   em.add_component monster_entity, monster_position
-  em.add_component monster_entity, Renderable.new(ColorizedString['g'].colorize(:green))
+  em.add_component monster_entity, Renderable.new(ColorizedString['g'].colorize(:green), z: 1)
 
   player_entity = em.create_tagged_entity Tag::PLAYER
   em.add_component player_entity, Health.new(10)
