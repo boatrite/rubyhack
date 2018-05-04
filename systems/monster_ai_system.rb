@@ -9,17 +9,13 @@ class MonsterAISystem < Recs::System
 
   def process_monster_ai(prev_em, em, entity)
     prev_player_position = prev_em.get_component_of_type_from_tag Tag::PLAYER, Position
-    last_player_i = prev_player_position.i
-    last_player_j = prev_player_position.j
-
     monster_position = em.get_component_of_type entity, Position
-    monster_i = monster_position.i
-    monster_j = monster_position.j
+    return if prev_player_position.node_id != monster_position.node_id
 
     player_health = em.get_component_of_type_from_tag Tag::PLAYER, Health
     monster_health = em.get_component_of_type entity, Health
 
-    if last_player_j.between?(monster_position.j-1, monster_position.j+1) && last_player_i.between?(monster_position.i-1, monster_position.i+1)
+    if prev_player_position.j.between?(monster_position.j-1, monster_position.j+1) && prev_player_position.i.between?(monster_position.i-1, monster_position.i+1)
       player_health.health -= 1
     end
 
